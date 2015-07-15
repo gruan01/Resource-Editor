@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="ResEditor.Views.EditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ab="clr-namespace:AsNum.Common.WPF.Behaviors;assembly=AsNum.Common.WPF"
+             xmlns:a="clr-namespace:AsNum.Common.WPF;assembly=AsNum.Common.WPF"
+             xmlns:local="clr-namespace:ResEditor"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--<UserControl.Resources>
+        <local:Converter1 x:Key="C1" />
+        <a:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <CollectionViewSource x:Key="DDD" Source="{Binding Source={StaticResource Proxy}, Path=Data.Datas}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Key" Converter="{StaticResource C1}" />
+            </CollectionViewSource.GroupDescriptions>
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending" PropertyName="Key" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <i:Interaction.Behaviors>
+            <ab:UnifiedPaddingBeahavior Padding="2" />
+        </i:Interaction.Behaviors>
+
+        <!--<TextBox x:Name="ResFilePath" />-->
+        <ComboBox ItemsSource="{Binding HistoryResFiles}" Text="{Binding ResFilePath}" IsEditable="True" />
+        <Button x:Name="ChoiceResxFile" Content="加载资源文件" Grid.Column="1" />
+
+        <!--<TextBox x:Name="DllFilePath" Grid.Row="1" />-->
+        <ComboBox Grid.Row="1" ItemsSource="{Binding HistoryDllFiles}" Text="{Binding DllFilePath}" IsEditable="True" />
+        <Button x:Name="ChoiceDllFile" Content="加载实体类" Grid.Row="1" Grid.Column="1" />
+
+        <ComboBox x:Name="EntityTypes" SelectedValue="{Binding SelectedEntity}" Grid.Row="2">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FullName}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button x:Name="LoadKeysFromDll" Grid.Row="2" Grid.Column="1" Content="导入" />
+
+
+        <DataGrid ItemsSource="{Binding CV}" CanUserAddRows="True" AutoGenerateColumns="True" Grid.Row="3" Grid.ColumnSpan="2">
+            <i:Interaction.Behaviors>
+                <ab:DataGridRowIndexBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.GroupStyle>
+                <!-- Style for groups at top level. -->
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="False" Background="#dddddd" BorderBrush="#eeeeee" BorderThickness="1,1,1,2">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Width="30"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0"/>
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+                <!-- Style for groups under the top level. -->
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel Background="Red">
+                                <TextBlock Text="{Binding Path=Name}" Foreground="Aqua" Margin="30,0,0,0" Width="100"/>
+                                <TextBlock Text="{Binding Path=ItemCount}" Foreground="Green"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
+        </DataGrid>
+
+        <DockPanel Grid.Row="4" Grid.ColumnSpan="2" LastChildFill="False">
+            <StackPanel Orientation="Horizontal" a:UniPadding.Padding="2" DockPanel.Dock="Left">
+                <Label Content="按Key 过滤" />
+                <TextBox Width="150" Text="{Binding FilterText,UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Button x:Name="Save" Content="保存修改" Width="150" DockPanel.Dock="Right" />
+        </DockPanel>
+    </Grid>
+</UserControl>

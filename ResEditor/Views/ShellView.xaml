@@ -1,0 +1,12 @@
+<ac:StyleWindow x:Class="ResEditor.Views.ShellView"
+        xmlns:ac="clr-namespace:AsNum.WPF.Controls;assembly=AsNum.WPF.Controls"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.caliburnproject.org"
+        >
+
+    <Grid Background="White">
+        <ContentControl cal:View.Model="{Binding VM}" />
+    </Grid>
+
+</ac:StyleWindow>
